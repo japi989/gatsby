@@ -24,35 +24,53 @@ module.exports = {
         async: false,
       },
       query: `
-        {
-          allWpArticles {
-            nodes {
-              date
-              id
-              title
-              slug
-              content
+          {
+            allWpArticles {
+              nodes {
+                date
+                id
+                title
+                slug
+                content
+              }
+            }
+            allWpNews {
+              nodes {
+                date
+                id
+                title
+                slug
+                content
+              }
+            }
+            allWpPost {
+              nodes {
+                date
+                id
+                title
+                slug
+                content
+              }
+            }
+            allWpPage {
+              nodes {
+                date
+                id
+                title
+                slug
+                content
+              }
             }
           }
-          allWpNews {
-            nodes {
-              date
-              id
-              title
-              slug
-              content
-            }
-          }
-        }
       `,
       ref: "id",
       index: ["title","content"],
       store: ["id", "slug", "date", "title","content"],
       normalizer: ({ data }) => {
          
-      const allPosts = data.allWpNews.nodes.concat(data.allWpArticles.nodes);
+      const allItems = data.allWpNews.nodes.concat(data.allWpArticles.nodes, data.allWpPage.nodes, data.allWpPost.nodes);
 
-        return  allPosts.map(node => ({
+        return  allItems.map(node => ({
           id: node.id,
           slug: node.slug,
           title: node.title,
