@@ -4,6 +4,7 @@ import { useFlexSearch } from "react-use-flexsearch"
 import * as queryString from "query-string"
 
 
+
 const SearchedPosts = ({ results }) =>
 	results.length > 0 ? (
 		results.map(node => {
@@ -58,20 +59,43 @@ const SearchPosts = ({ posts, localSearchBlog, location, navigate }) => {
 		localSearchBlog.store
 	)
 
+	function addQuery(){
+		window.location =`?search=${word}`;
+	}
+
 	return (
 		<>
+		{query ?
+			<>
 				<input
 					id="search"
 					type="search"
 					placeholder="Search all posts"
-					value={query}
+					// value={query}
 					onChange={e => {
 						setWord(e.target.value);
-						setQuery(e.target.value);
 					}}
+					onKeyDown={(e) => e.key === 'Enter' && addQuery()}
 				/>
-				<button onClick={() => window.location =`/blog?search=${word}`}>Click</button>
-			{query ? <SearchedPosts results={results} /> : <AllPosts posts={posts} />}
+				<button onClick={addQuery}>Click</button>
+				<SearchedPosts results={results} />
+			</> :
+			<>
+				<div>
+					<input
+						id="search"
+						type="search"
+						placeholder="Search..."
+						// value={query}
+						onChange={e => {
+							setWord(e.target.value);
+						}}
+						onKeyDown={(e) => e.key === 'Enter' && addQuery()}
+					/>
+					<button onClick={addQuery}>Click</button>
+				</div>
+			</>
+			}
 		</>
 	)
 }
