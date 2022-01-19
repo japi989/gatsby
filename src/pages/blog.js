@@ -6,7 +6,7 @@ import SearchPosts from "../components/searchPosts"
 class Blog extends React.Component {
 	render() {
 		const { data, navigate, location } = this.props
-		const posts = data.allWpNews.edges
+		const posts = data.allWpNews.edges.concat(data.allWpArticles.edges)
 		const localSearchBlog = data.localSearchBlog
 
 		return (
@@ -40,5 +40,17 @@ export const pageQuery = graphql`
 				}
 			}
 		}
+		allWpArticles {
+			edges {
+				node {
+	              date
+	              id
+	              title
+	              slug
+	              content
+            	}
+			}
+
+         }
 	}
 `

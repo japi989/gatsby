@@ -48,14 +48,17 @@ module.exports = {
       ref: "id",
       index: ["title","content"],
       store: ["id", "slug", "date", "title","content"],
-      normalizer: ({ data }) =>
-        data.allWpNews.nodes.map(node => ({
+      normalizer: ({ data }) => {
+         
+      const allPosts = data.allWpNews.nodes.concat(data.allWpArticles.nodes);
+
+        return  allPosts.map(node => ({
           id: node.id,
           slug: node.slug,
           title: node.title,
           content: node.content,
           date: node.date,
-        })),
+        }))}
     },
   },
   ]
