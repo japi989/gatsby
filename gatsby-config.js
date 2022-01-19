@@ -14,53 +14,49 @@ module.exports = {
   `gatsby-plugin-sharp`,
   `gatsby-transformer-sharp`,
   {
-    resolve: 'gatsby-plugin-flexsearch',
+    resolve: "gatsby-plugin-local-search",
     options: {
-      languages: ['en'],
-      type: 'MarkdownRemark',
-      fields: [
-        {
-          name: 'title',
-          indexed: true,
-          resolver: 'frontmatter.title',
-          attributes: {
-            encode: 'balance',
-            tokenize: 'strict',
-            threshold: 6,
-            depth: 3,
-          },
-          store: true,
-        },
-        {
-          name: 'description',
-          indexed: true,
-          resolver: 'frontmatter.description',
-          attributes: {
-            encode: 'balance',
-            tokenize: 'strict',
-            threshold: 6,
-            depth: 3,
-          },
-          store: false,
-        },
-        {
-          name: 'url',
-          indexed: false,
-          resolver: 'fields.slug',
-          store: true,
-        },
-      ],
-    },
-  },{
-      resolve: "gatsby-source-graphql",
-      options: {
-        // Remote schema query type. This is an arbitrary name.
-        typeName: "WPGraphQL",
-        // Field name under which it will be available. Used in your Gatsby query. This is also an arbitrary name.
-        fieldName: "wpcontent",
-        // GraphQL endpoint, relative to your WordPress home URL.
-        url: "http://learning-gatsby.test/graphql",
+      name: "blog",
+      engine: "flexsearch",
+      engineOptions: {
+        encode: "icase",
+        tokenize: "forward",
+        async: false,
       },
+      query: `
+        {
+          allWpArticles {
+            nodes {
+              date
+              id
+              title
+              slug
+              content
+            }
+          }
+          allWpNews {
+            nodes {
+              date
+              id
+              title
+              slug
+              content
+            }
+          }
+        }
+      `,
+      ref: "id",
+      index: ["title","content"],
+      store: ["id", "slug", "date", "title","content"],
+      normalizer: ({ data }) =>
+        data.allWpNews.nodes.map(node => ({
+          id: node.id,
+          slug: node.slug,
+          title: node.title,
+          content: node.content,
+          date: node.date,
+        })),
     },
+  },
   ]
 };
