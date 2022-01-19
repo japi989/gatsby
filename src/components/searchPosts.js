@@ -15,7 +15,7 @@ const SearchedPosts = ({ results }) =>
 			return (
 				<div key={slug}>
 					<h3>
-						<Link style={{ boxShadow: `none` }} to={`/blog${node.slug}`}>
+						<Link style={{ boxShadow: `none` }} to={`/${node.slug}`}>
 							{title}
 						</Link>
 					</h3>
@@ -37,7 +37,7 @@ const AllPosts = ({ posts }) => (
 			return (
 				<div key={node.slug}>
 					<h3>
-						<Link style={{ boxShadow: `none` }} to={`/blog${node.slug}`}>
+						<Link style={{ boxShadow: `none` }} to={`/${node.slug}`}>
 							{title}
 						</Link>
 					</h3>
