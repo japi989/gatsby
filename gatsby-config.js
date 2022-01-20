@@ -6,7 +6,12 @@ module.exports = {
   plugins: [{
     resolve: 'gatsby-source-wordpress',
     options: {
-      "url": "http://learning-gatsby.test/graphql"
+      "url": "http://learning-gatsby.test/graphql",
+      type: {
+      MediaItem: {
+        exclude: true,
+      },
+    },
     }
   },
   "gatsby-plugin-sass",
